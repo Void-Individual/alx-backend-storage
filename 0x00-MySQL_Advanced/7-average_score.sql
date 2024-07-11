@@ -9,7 +9,7 @@ BEGIN
 
     SELECT SUM(score), COUNT(*) INTO total, number_of_corrections
     FROM corrections
-    WHERE user_id = user_id;
+    WHERE corrections.user_id = user_id;
 
     -- Check if there have been corrections made
     IF number_of_corrections > 0 THEN
