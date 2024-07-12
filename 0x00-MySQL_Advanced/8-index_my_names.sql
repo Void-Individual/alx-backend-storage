@@ -1,6 +1,6 @@
 -- Script to create an index to a table
 
-DROP INDEX IF EXISTS idx_name_first ON names;
+-- DROP INDEX idx_name_first ON names;
 
 -- Generate a new column for the first letter of each name
 ALTER TABLE names
