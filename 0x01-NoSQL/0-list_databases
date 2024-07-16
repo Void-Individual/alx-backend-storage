@@ -1,3 +1,2 @@
 // NoSQL script to list databases
-
 show dbs
