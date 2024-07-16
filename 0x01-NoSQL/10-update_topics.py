@@ -8,7 +8,7 @@ def update_topics(mongo_collection, name, topics):
 
     try:
         # Update operation using UpdateOne
-        update_result = mongo_collection.update_one(
+        update_result = mongo_collection.update_many(
             {"name": name},
             {"$set": {"topics": topics}}
         )
