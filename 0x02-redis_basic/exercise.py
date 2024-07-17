@@ -32,13 +32,13 @@ class Cache:
             return fn(value)
         return value
 
-    def get_str(self, key) -> str:
+    def get_str(self, key: uuid.UUID) -> str:
         """Method to retrieve and return a str instead of binary"""
 
         data = self._redis.get(key)
         return str(data)
 
-    def get_int(self, key) -> int:
+    def get_int(self, key: uuid.UUID) -> int:
         """Method to retrieve and return an int instead of binary"""
 
         data = self._redis.get(key)
