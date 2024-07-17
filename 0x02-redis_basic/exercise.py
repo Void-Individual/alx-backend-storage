@@ -29,9 +29,9 @@ def call_history(method: Callable) -> Callable:
     @wraps(method)
     def list_method(self, *args, **kwargs):
         """Function to add parameters to redis lists"""
-        self._redis.lpush(f"{method.__qualname__}:inputs", str(args))
+        self._redis.rpush(f"{method.__qualname__}:inputs", str(args))
         data = method(self, *args, **kwargs)
-        self._redis.lpush(f"{method.__qualname__}:outputs", data)
+        self._redis.rpush(f"{method.__qualname__}:outputs", data)
         return data
 
     return list_method
