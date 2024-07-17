@@ -3,7 +3,7 @@
 
 import uuid
 import redis
-from typing import Any, Callable
+from typing import Union, Callable
 
 
 class Cache:
@@ -16,7 +16,7 @@ class Cache:
         self.__redis = redis.Redis(host='localhost', port=6379)
         self.__redis.flushdb()
 
-    def store(self, data: Any) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """Method to generate a random key, store it in redis and
         return the key"""
 
