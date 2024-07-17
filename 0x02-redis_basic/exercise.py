@@ -24,7 +24,7 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key, fn: Callable) -> str:
+    def get(self, key: uuid.UUID, fn: Callable) -> str:
         """Get method to retrieve the value of the key in desired format"""
 
         value = self._redis.get(key)
