@@ -8,7 +8,8 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
-    """Takes a method callable argument and returns a callable"""
+    """Decorator function that takes a method callable as an
+    argument and returns a callable"""
 
     @wraps(method)
     def count_wrapper(self, *args, **kwargs):
@@ -19,6 +20,21 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
 
     return count_wrapper
+
+
+def call_history(method: Callable) -> Callable:
+    """Decorator function to keep track of input and output values by
+    storing them in different lists"""
+
+    @wraps(method)
+    def list_method(self, *args, **kwargs):
+        """Function to add parameters to redis lists"""
+        self._redis.lpush(f"{method.__qualname__}:inputs", str(args))
+        data = method(self, *args, **kwargs)
+        self._redis.lpush(f"{method.__qualname__}:outputs", data)
+        return data
+
+    return list_method
 
 
 class Cache:
@@ -32,6 +48,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Method to generate a random key, store it in redis and
         return the key"""
