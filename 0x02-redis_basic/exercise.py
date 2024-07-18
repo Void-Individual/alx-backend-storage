@@ -37,6 +37,28 @@ def call_history(method: Callable) -> Callable:
     return list_method
 
 
+def replay(method: Callable) -> None:
+    """Function to display the history of calls of a method"""
+
+    # Retrieve the redis instance from the cache class
+    cache = method.__self__
+    # Retrieve the method name
+    name = method.__qualname__
+    # Retrieve the number of times the method was called
+    count = cache._redis.get(method.__qualname__)
+    print(f"{name} was called {int(count)} times:")
+
+    # Retrieve the input values stored
+    input_list = cache._redis.lrange(f"{name}:inputs", 0, -1)
+    # Retrieve the output values stored
+    output_list = cache._redis.lrange(f"{name}:outputs", 0, -1)
+    # Pair up the values using zip, and affix it as a dict
+    paired = dict(zip(input_list, output_list))
+    # Decode each of the previously stored values before printing them
+    for key, value in paired.items():
+        print(f"{name}(*{key.decode('utf-8')}) -> {value.decode('utf-8')}")
+
+
 class Cache:
     """A cache class to hold an instance of a redis client"""
 
